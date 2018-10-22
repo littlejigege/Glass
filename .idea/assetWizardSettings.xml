@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_locate" />
-                            <entry key="sourceFile" value="D:\谷歌下载\locate.svg" />
+                            <entry key="outputName" value="ic_collapse" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/chrome下载/收起.svg" />
                           </map>
                         </option>
                       </PersistentState>

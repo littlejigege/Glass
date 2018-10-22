@@ -15,10 +15,10 @@ interface RecordDao {
     fun insertAll(records: List<Record>)
 
     @Query("SELECT * FROM records WHERE info = \"help\" ORDER BY warningTime DESC")
-    fun getHelpsOrderByTime(): LiveData<List<Record>>
+    fun getHelpsOrderByTime(): List<Record>
 
     @Query("SELECT * FROM records WHERE info = \"\" ORDER BY warningTime DESC")
-    fun getNormalsOrderByTime(): LiveData<List<Record>>
+    fun getNormalsOrderByTime(): List<Record>
 
     @Query("SELECT strftime('%Y-%m-%d',warningTime,'unixepoch') FROM records GROUP BY strftime('%Y-%m-%d',warningTime,'unixepoch') ORDER BY strftime('%Y-%m-%d',warningTime,'unixepoch')")
     fun getAllDays(): List<String>

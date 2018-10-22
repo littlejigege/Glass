@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         setupButton()
         setupTabSegment()
-        GlobalScope.launch { a() }
+
     }
 
     private fun setupTabSegment() {
@@ -55,37 +55,9 @@ class HomeActivity : AppCompatActivity() {
         spannable.setSpan(alignMiddleImageSpan, 0, "[icon]".length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
         buttonToMap.text = spannable
         buttonToMap.setOnClickListener {
-            //startActivity(Intent(this, MyMapActivity::class.java))
-            GlobalScope.launch { b() }
+            startActivity(Intent(this, MyMapActivity::class.java))
         }
     }
 
-    private fun a() {
-        val recordDao = AppDatabase.getInstance(this).recordDao()
-        for (i in 1..30) {
-            val date1 = Calendar.getInstance().apply { set(2018, 1, i, 0, 0, 0) }
-            val date2 = Calendar.getInstance().apply { set(2018, 1, i, 0, 0, 1) }
-            val record1 = Record(1.1, 2.2, "help",warningTime = date1.timeInMillis/1000)
-            val record2 = Record(3.4, 5.4, warningTime = date2.timeInMillis/1000)
-            recordDao.insert(record1)
-            recordDao.insert(record2)
-        }
 
-    }
-
-    private fun b() {
-        val recordDao = AppDatabase.getInstance(this).recordDao()
-//        for (allDay in recordDao.getAllDays()) {
-//            println("==========$allDay===========")
-//            for (record in recordDao.getNormalsByDay(allDay)) {
-//                println(record)
-//            }
-//
-//        }
-        recordDao.getNormalsOrderByTime().observe(this,android.arch.lifecycle.Observer {
-            it?.forEach {
-                println(it)
-            }
-        })
-    }
 }

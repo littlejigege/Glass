@@ -2,6 +2,7 @@ package com.qgstudio.glass
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -77,4 +78,18 @@ fun <T : Activity> Activity.finishAndStart(calzz: Class<T>) {
     val intent = Intent(this, calzz)
     startActivity(intent)
     finish()
+}
+
+fun getDensity(context: Context): Float {
+    return context.resources.displayMetrics.density
+}
+
+/**
+ * 单位转换: dp -> px
+ *
+ * @param dp
+ * @return
+ */
+fun dp2px(context: Context, dp: Int): Int {
+    return (getDensity(context) * dp + 0.5).toInt()
 }
