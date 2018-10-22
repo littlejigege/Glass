@@ -1,10 +1,12 @@
 package com.qgstudio.glass
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.qgstudio.glass.model.data.ServerResponse
+import com.qgstudio.glass.common.model.data.ServerResponse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -69,4 +71,10 @@ fun <T : Any> Observable<T>.normalSubscribeBy(onNext: (T) -> Unit): Disposable {
                         onNext(it)
                     }
             )
+}
+
+fun <T : Activity> Activity.finishAndStart(calzz: Class<T>) {
+    val intent = Intent(this, calzz)
+    startActivity(intent)
+    finish()
 }

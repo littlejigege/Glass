@@ -1,6 +1,7 @@
 package com.qgstudio.glass
 
 import android.app.Application
+import com.qgstudio.glass.common.model.db.AppDatabase
 
 class App : Application() {
     companion object {
@@ -10,5 +11,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        AppDatabase.getInstance(this)
     }
 }

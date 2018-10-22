@@ -1,6 +1,6 @@
 package com.qgstudio.glass.common
 
-import com.qgstudio.glass.model.data.ServerResponse
+import com.qgstudio.glass.common.model.data.ServerResponse
 import com.qgstudio.glass.showToast
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

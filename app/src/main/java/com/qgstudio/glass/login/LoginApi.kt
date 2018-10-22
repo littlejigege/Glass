@@ -1,9 +1,8 @@
 package com.qgstudio.glass.login
 
-import com.qgstudio.glass.model.data.ServerResponse
+import com.qgstudio.glass.common.model.data.ServerResponse
 import io.reactivex.Observable
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 

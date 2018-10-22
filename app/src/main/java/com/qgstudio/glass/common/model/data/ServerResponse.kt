@@ -1,4 +1,4 @@
-package com.qgstudio.glass.model.data
+package com.qgstudio.glass.common.model.data
 
 data class ServerResponse<T>(val state: Int, val info: String, val data: T?) {
 

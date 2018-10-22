@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import com.qgstudio.glass.R
+import com.qgstudio.glass.finishAndStart
 import com.qgstudio.glass.home.HomeActivity
+import com.qgstudio.glass.service.MyService
 import com.qgstudio.glass.showToast
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import kotlinx.android.synthetic.main.activity_login.*
@@ -46,8 +48,7 @@ class LoginActivity : AppCompatActivity() {
         //长按后门直入
         btnVeCode.setOnLongClickListener {
             //跳过登录
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
+            loginSuccess()
             true
         }
 
@@ -79,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     viewModel.login(phone, veCode).observe(this@LoginActivity, Observer {
                         if (it == 200) {
                             // TODO 登录成功
+                            loginSuccess()
                         } else {
                             //TODO 登录失败
                         }
@@ -102,7 +104,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginSuccess(){
 
+    private fun loginSuccess() {
+        //启动前台服务
+        startService(Intent(this, MyService::class.java))
+        finishAndStart(HomeActivity::class.java)
     }
 }

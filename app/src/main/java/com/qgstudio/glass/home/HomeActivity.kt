@@ -1,18 +1,91 @@
 package com.qgstudio.glass.home
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.text.Spannable
+import android.text.SpannableString
 import com.qgstudio.glass.R
+import com.qgstudio.glass.common.model.data.Record
+import com.qgstudio.glass.common.model.db.AppDatabase
+import com.qgstudio.glass.map.MyMapActivity
+import com.qgstudio.glass.showToast
+import com.qgstudio.glass.spothistory.SpotHistoryFragment
+import com.qmuiteam.qmui.span.QMUIAlignMiddleImageSpan
+import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import com.qmuiteam.qmui.util.QMUIDrawableHelper
 import com.qmuiteam.qmui.widget.QMUITabSegment
+import com.tencent.tencentmap.mapsdk.map.MapActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.launch
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        tabSegment.addTab(QMUITabSegment.Tab("1"))
-                .addTab(QMUITabSegment.Tab("2"))
+        setupButton()
+        setupTabSegment()
+        GlobalScope.launch { a() }
+    }
+
+    private fun setupTabSegment() {
+        //viewPager
+        viewPager.adapter = HomeFragmentAdapter(supportFragmentManager).apply {
+            addPage(SpotHistoryFragment::class.java)
+            addPage(SpotHistoryFragment::class.java)
+        }
+        //tab
+        tabSegment.addTab(QMUITabSegment.Tab("历史轨迹记录"))
+                .addTab(QMUITabSegment.Tab("报警记录"))
                 .mode = QMUITabSegment.MODE_FIXED
+        tabSegment.setHasIndicator(true)
+        tabSegment.setupWithViewPager(viewPager, false)
+    }
+
+    private fun setupButton() {
+        val spanWidthCharacterCount = 2f
+        val spannable = SpannableString("[icon]进入地图查看实时轨迹")
+        val iconDrawable = resources.getDrawable(R.drawable.ic_locate)
+        iconDrawable?.setBounds(0, 0, iconDrawable.intrinsicWidth, iconDrawable.intrinsicHeight)
+        val alignMiddleImageSpan = QMUIAlignMiddleImageSpan(iconDrawable, QMUIAlignMiddleImageSpan.ALIGN_MIDDLE, spanWidthCharacterCount)
+        spannable.setSpan(alignMiddleImageSpan, 0, "[icon]".length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        buttonToMap.text = spannable
+        buttonToMap.setOnClickListener {
+            //startActivity(Intent(this, MyMapActivity::class.java))
+            GlobalScope.launch { b() }
+        }
+    }
+
+    private fun a() {
+        val recordDao = AppDatabase.getInstance(this).recordDao()
+        for (i in 1..30) {
+            val date1 = Calendar.getInstance().apply { set(2018, 1, i, 0, 0, 0) }
+            val date2 = Calendar.getInstance().apply { set(2018, 1, i, 0, 0, 1) }
+            val record1 = Record(1.1, 2.2, "help",warningTime = date1.timeInMillis/1000)
+            val record2 = Record(3.4, 5.4, warningTime = date2.timeInMillis/1000)
+            recordDao.insert(record1)
+            recordDao.insert(record2)
+        }
+
+    }
+
+    private fun b() {
+        val recordDao = AppDatabase.getInstance(this).recordDao()
+//        for (allDay in recordDao.getAllDays()) {
+//            println("==========$allDay===========")
+//            for (record in recordDao.getNormalsByDay(allDay)) {
+//                println(record)
+//            }
+//
+//        }
+        recordDao.getNormalsOrderByTime().observe(this,android.arch.lifecycle.Observer {
+            it?.forEach {
+                println(it)
+            }
+        })
     }
 }
