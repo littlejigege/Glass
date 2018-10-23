@@ -7,7 +7,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private val client by lazy {
+    val client by lazy {
         Retrofit
                 .Builder()
                 .baseUrl("http://1.1.1.1:8080/")
